@@ -65,6 +65,7 @@ static struct usage_help usage_help[] = {
 		"          --max-graph-depth limit function_graph depth\n"
 		"          --cmdlines-size change kernel saved_cmdlines_size\n"
 		"          --no-filter include trace-cmd threads in the trace\n"
+		"          --no-clear do not clear the ring buffer before recording\n"
 		"          --proc-map save the traced processes address map into the trace.dat file\n"
 		"          --user execute the specified [command ...] as given user\n"
 		"          --tsc2nsec Convert the current clock to nanoseconds, using tsc multiplier and shift from the Linux"

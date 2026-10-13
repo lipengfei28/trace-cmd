@@ -74,6 +74,7 @@ static int rt_prio;
 
 static int keep;
 static int Keep; // do not reset before tracing
+static int no_clear;
 
 static int latency;
 static long sleep_time = 1000;
@@ -2757,7 +2758,8 @@ void tracecmd_disable_all_tracing(int disable_tracer)
 	for_all_instances(instance)
 		update_ftrace_pid(instance, "", 1);
 
-	clear_trace_instances();
+	if (!no_clear)
+		clear_trace_instances();
 }
 
 static void
@@ -6033,6 +6035,7 @@ enum {
 	OPT_notimeout		= LONG_OPT(26),
 	OPT_daemonize		= LONG_OPT(27),
 	OPT_subbuf		= LONG_OPT(28),
+	OPT_no_clear		= LONG_OPT(29),
 };
 
 void trace_stop(int argc, char **argv)
@@ -6506,6 +6509,7 @@ static void parse_record_options(int argc,
 			{"temp", required_argument, NULL, OPT_temp},
 			{"subbuf-size", required_argument, NULL, OPT_subbuf},
 			{"daemonize", no_argument, NULL, OPT_daemonize},
+			{"no-clear", no_argument, NULL, OPT_no_clear},
 			{NULL, 0, NULL, 0}
 		};
 
@@ -6993,6 +6997,9 @@ static void parse_record_options(int argc,
 			if (!IS_RECORD(ctx))
 				die("--daemonize option used for 'record' command only");
 			do_daemonize = true;
+			break;
+		case OPT_no_clear:
+			no_clear = 1;
 			break;
 		case OPT_tsc2nsec:
 			ret = get_tsc_nsec(&ctx->tsc2nsec.shift,
